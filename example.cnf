@@ -1,0 +1,12 @@
+c le format cnf est le suivant
+c les lignes commencant par "c " sont les commentaires
+c la ligne commendant par un "p " est la ligne de définition du problème: elle comporte le type de pb (cnf), le nombre de variables (ici 3), et le nombre de clauses (ici 2)
+c les lignes suivantes sont les définitions de chaque clause (une par ligne).
+c les variables sont notées par leur indice (variant de 1 au nombre de variables)
+c le caractère 0 indique la fin de la clause
+c la négation est indiquée par le "-"
+c lformulation suivante traduit donc (x1 or (not x3)) and (x2 or x3 or (notx1)) 
+c 
+p cnf 3 2
+1 -3 0
+2 3 -1 0

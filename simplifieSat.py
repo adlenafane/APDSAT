@@ -17,7 +17,7 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
     if len(clause)==0:
         return "Erreur: la clause ne contient aucun litteral !"
     # On suppose que la clause est fausse et si on trouve autre chose qu'un 'F' on modifiera la clause
-    clauseFausse = true
+    clauseFausse = True
     for k in clause:
         if k>0:
             if varData[k-1]=='T':
@@ -34,3 +34,14 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
         return [False]
     return clause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
 #attention pour le moment la fonction ne prend pas en compte le cas où tous les litéraux de la clause sont False, ce qui devrait renvoyer un False
+
+def testSatOk(pbSat):
+    if pbSat == []:
+        return True
+    for clause in pbSat:
+        if clause == False:
+            return False
+        else:
+            if clause != True:
+                nouveauSat.append(clause)
+    return nouveauSat

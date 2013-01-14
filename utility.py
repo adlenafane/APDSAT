@@ -31,3 +31,34 @@ def findCountOfLitterals(listOfClauses):
 			else:
 				countOfLitterals[litteral] = 1
 	return countOfLitterals
+
+def genererRepartitionDesPositifsEtNegatifs(listeDeClauses):
+	#Renvoie un dico avec pour chaque litteral une liste contenant le nbr d apparitions positives et negatives dans le probleme SAT
+	result={}
+	for clause in listeDeClauses:
+		for litteral in clause:
+			if abs(litteral) in result:
+				if litteral>0:
+					result[abs(litteral)][0]=result[abs(litteral)][0]+1
+				elif litteral<0:
+					result[abs(litteral)][1]=result[abs(litteral)][1]+1
+				else:
+					return "Error - 0 in listeDeClauses"
+
+			else:
+				if litteral>0:
+					result[abs(litteral)]=[1,0]
+				elif litteral<0:
+					result[abs(litteral)]=[0,1]
+				else:
+					return "Error - 0 in listeDeClauses"
+	return result
+
+def calculDuRatioDePositifsEtNegatifs(dictionnaireDeRepartitionDesClausesEnPositifEtNegatif):
+	# Prend en entree le resultat de la fonction genererRepartitionDesPositifsEtNegatifs
+	#Calcule le ratio de repartion entre xi et xibarre pour chaque litteral
+	result={}
+	for litteral in dictionnaireDeRepartitionDesClausesEnPositifEtNegatif:
+		litteralDistributionList=dictionnaireDeRepartitionDesClausesEnPositifEtNegatif[litteral]
+		result[litteral]=abs(float(litteralDistributionList[0]-litteralDistributionList[1])/(litteralDistributionList[0]+litteralDistributionList[1]))
+	return result

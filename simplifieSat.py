@@ -38,13 +38,15 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
 
 
 def testSatOk(pbSat):
+    nouveauSat = []
     if pbSat == []:
         return True
     for clause in pbSat:
-        if clause == False:
+        if clause == [False]:
             return False
         else:
-            if clause != True:
+            if str(clause) != "[True]":
+                print "Clause: " + str(clause)
                 nouveauSat.append(clause)
     return nouveauSat
 

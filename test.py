@@ -1,3 +1,4 @@
+# coding=utf-8
 from utility import *
 from simplifieSat import *
 from random import choice

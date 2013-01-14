@@ -1,4 +1,5 @@
 # -*- coding: cp1252 -*-
+# coding=utf-8
 
 def loadCnfFile(fileName='example.cnf'):
     """ retourne une liste contenant: le nombre de variables, puis le nombre de clauses, puis la liste de listes d'entiers decrivants la forme normale conjonctive"""

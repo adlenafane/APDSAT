@@ -1,4 +1,5 @@
 # -*- coding: cp1252 -*-
+# coding=utf-8
 
 def simplifieSat(pbSat, varData):
     """ entrée: liste de liste(clauses) décrivant le pb sat, liste d'état des variables: T pour True, F pour False, U pour undecided.
@@ -23,14 +24,15 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
             if varData[k-1]=='T':
                 return [True]
             elif varData[k-1]!='F':
-                clauseFausse = false
+                clauseFausse = False
         elif k<0:
+            k = abs(k)
             if varData[k-1]=='F':
                 return [True]
             elif varData[k-1]!='T':
-                clauseFausse = false
+                clauseFausse = False
     # Si clauseFausse est restee vraie, cela signifie qu'on a vu au moins une clause non fausse
-    if clauseFausse == true:
+    if clauseFausse == True:
         return [False]
     return clause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
 

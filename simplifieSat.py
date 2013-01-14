@@ -7,7 +7,7 @@ sortie: un nouveau problème sat simplifié avec l'état des variables passées en a
         return "Erreur: le probleme ne contient aucune clause !"
     nouveauSat = []
     for clause in pbSat:
-        nouvelleClause = simplifierClause(clause, varData)
+        nouvelleClause = simplifieClause(clause, varData)
         nouveauSat.append(nouvelleClause)
     return nouveauSat
 
@@ -33,7 +33,7 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
     if clauseFausse == true:
         return [False]
     return clause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
-#attention pour le moment la fonction ne prend pas en compte le cas où tous les litéraux de la clause sont False, ce qui devrait renvoyer un False
+
 
 def testSatOk(pbSat):
     if pbSat == []:
@@ -45,3 +45,4 @@ def testSatOk(pbSat):
             if clause != True:
                 nouveauSat.append(clause)
     return nouveauSat
+

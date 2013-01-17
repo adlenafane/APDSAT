@@ -32,12 +32,13 @@ def comportementMaitre(comm, filename):
 		probleme = fileDesPb.get()
 		varData = probleme[0]
 		pbSat = probleme[1]
+		variablesRestantes = [variable for variable in varData if variable == 'U']
 		print varData
 		print pbSat
 
 		# Changer le nom de la fonction
 		variablesOrdonnees = varData
-		tailleBranching = int(log(esclaveDisponible)/log(2))
+		tailleBranching = min(int(log(esclaveDisponible)/log(2)), len(variablesRestantes))
 		print tailleBranching
 		pbNonFini = False
 	return

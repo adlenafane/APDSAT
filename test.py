@@ -50,3 +50,11 @@ print "\n"
 print "=== Répartion et ration des nombres ==="
 print genererRepartitionDesPositifsEtNegatifs([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])
 print calculDuRatioDePositifsEtNegatifs(genererRepartitionDesPositifsEtNegatifs([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]]))
+a= calculClassementFrequence(findCountOfLitterals([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]]))
+print a
+print "Should be [4, 3, 1, 2]"
+b=calculClassementPositifsEtNegatifs(calculDuRatioDePositifsEtNegatifs(genererRepartitionDesPositifsEtNegatifs([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])))
+print b
+print "Should be [3, 4, 2, 1]"
+print "Classement:"
+print calculClassementLitteraux(a,b)

@@ -2,8 +2,8 @@
 # coding=utf-8
 
 def simplifieSat(pbSat, varData):
-    """ entrée: liste de liste(clauses) décrivant le pb sat, liste d'état des variables: T pour True, F pour False, U pour undecided.
-sortie: un nouveau problème sat simplifié avec l'état des variables passées en argument"""
+    """ entrÃ©e: liste de liste(clauses) dÃ©crivant le pb sat, liste d'Ã©tat des variables: T pour True, F pour False, U pour undecided.
+sortie: un nouveau problÃ¨me sat simplifiÃ© avec l'Ã©tat des variables passÃ©es en argument"""
     if len(pbSat)==0:
         return "Erreur: le probleme ne contient aucune clause !"
     nouveauSat = []
@@ -13,8 +13,8 @@ sortie: un nouveau problème sat simplifié avec l'état des variables passées en a
     return nouveauSat
 
 def simplifieClause(clause, varData):
-    """ entrée: une clause, liste d'état des variables: T pour True, F pour False, U pour undecided.
-sortie: un nouvelle clause simplifié avec l'état des variables passées en argument"""
+    """ entrÃ©e: une clause, liste d'Ã©tat des variables: T pour True, F pour False, U pour undecided.
+sortie: un nouvelle clause simplifiÃ© avec l'Ã©tat des variables passÃ©es en argument"""
     if len(clause)==0:
         return "Erreur: la clause ne contient aucun litteral !"
     # On suppose que la clause est fausse et si on trouve autre chose qu'un 'F' on modifiera la clause
@@ -34,7 +34,7 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en argume
     # Si clauseFausse est restee vraie, cela signifie qu'on a vu au moins une clause non fausse
     if clauseFausse == True:
         return [False]
-    return clause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
+    return clause #cette ligne n'est atteinte que si le programme n'est pas entrÃ© dans le if ou le elif ci-dessus
 
 
 def testSatOk(pbSat):

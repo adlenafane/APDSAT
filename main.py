@@ -6,7 +6,8 @@ comm = MPI.COMM_WORLD
 
 if comm.rank == 0:
 	# Master
-	comportementMaitre(comm)
+	filename = 'example.cnf'
+	comportementMaitre(comm, filename)
 else:
 	# Slave
 	comportementEsclave(comm)

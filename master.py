@@ -2,6 +2,7 @@
 from mpi4py import MPI
 from utility import loadCnfFile
 import Queue
+from math import log
 
 def comportementMaitre(comm, filename):
 	rank = comm.rank
@@ -34,5 +35,9 @@ def comportementMaitre(comm, filename):
 		print varData
 		print pbSat
 
+		# Changer le nom de la fonction
+		variablesOrdonnees = varData
+		tailleBranching = int(log(esclaveDisponible)/log(2))
+		print tailleBranching
 		pbNonFini = False
 	return

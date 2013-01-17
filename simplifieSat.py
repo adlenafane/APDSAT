@@ -38,6 +38,7 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en arg
 
 
 def testSatOk(pbSat):
+    #Renvoie True ou False si le problème est terminé, et supprime les clauses composées uniquement de True
     nouveauSat = []
     if pbSat == []:
         return True

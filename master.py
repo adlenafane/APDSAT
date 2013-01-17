@@ -1,6 +1,6 @@
 # coding=utf-8
 from mpi4py import MPI
-from utility import loadCnfFile
+from utility import loadCnfFile, calculVariablesPourBranching
 import Queue
 from math import log
 
@@ -32,13 +32,18 @@ def comportementMaitre(comm, filename):
 		probleme = fileDesPb.get()
 		varData = probleme[0]
 		pbSat = probleme[1]
+		# Les variables restantes sont celles qui ont pour valeur U
 		variablesRestantes = [variable for variable in varData if variable == 'U']
 		print varData
 		print pbSat
 
 		# Changer le nom de la fonction
-		variablesOrdonnees = varData
+		variablesOrdonnees = variablesRestantes
+		# On choisit la taille de notre branching comme étant le minimum entre les ressources disponibles et le nombre de variables sur lequel faire des branches
 		tailleBranching = min(int(log(esclaveDisponible)/log(2)), len(variablesRestantes))
-		print tailleBranching
+
+		nouveauSetDeDonnees = []
+		calculVariablesPourBranching(varData, variablesRestantes[:tailleBranching], nouveauSetDeDonnees)
+
 		pbNonFini = False
 	return

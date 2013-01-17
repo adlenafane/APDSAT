@@ -15,6 +15,29 @@ def loadCnfFile(fileName='example.cnf'):
     result.append(cnf)
     return result
 
+def calculVariablesPourBranching(varData, varBranch, result):
+	"""if len(varBranch) == 1:
+		varData = list(varData)
+		varData[varBranch[0]-1] = 'F'
+		result.append(varData)
+
+		varData = list(varData)
+		varData[varBranch[0]-1] = 'T'
+		result.append(varData)
+	else:
+		variable = varBranch.pop(0)
+
+		varData[variable-1] = 'F'
+		varData = list(varData)
+		result.extend(calculVariablesPourBranching(varData, varBranch, result))
+
+		varData[variable-1] = 'T'
+		varData = list(varData)
+		print varData
+		result.extend(calculVariablesPourBranching(varData, varBranch, result))
+		"""
+	return
+
 
 def findCountOfLitterals(listOfClauses):
 	countOfLitterals = {}

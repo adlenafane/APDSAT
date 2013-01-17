@@ -6,6 +6,11 @@ from retireSingleton import *
 
 
 cnf=loadCnfFile("testCnf.cnf")[2]
+print "=== calculVariablesPourBranching ==="
+resultat = []
+print calculVariablesPourBranching(['U','U','U'], [2,1,3], resultat)
+print resultat
+print len(resultat)
 print "la clause contenue dans testCnf.cnf est la suivante:"
 print cnf
 print "\n"

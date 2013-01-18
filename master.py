@@ -32,21 +32,22 @@ def comportementMaitre(comm, filename):
 	while pbNonFini:
 		if fileDesPb.empty() == False and esclaveDisponible >=1:
 			batchDesProblemes = []
-			while fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch:
+			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):
 				batchDesProblemes.append(fileDesPb.get())
+			esclaveTrouve = False
 			for indexEsclave in range(1, size):
-						if listeEsclave[indexEsclave]==0:
-							listeEsclave[indexEsclave] = 1
-							esclaveDisponible = esclaveDisponible - 1
-							comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
-							break
-
+				if listeEsclave[indexEsclave]==0 and esclaveTrouve==False:
+					listeEsclave[indexEsclave] = 1
+					esclaveDisponible = esclaveDisponible - 1
+					comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
+					print "Batch"
+					print batchDesProblemes
+					esclaveTrouve = True
 		"""
-		for indexEsclave in range(1, size):
-			for tagPossible in range(1,3):
-				#message = comm.irecv(source = indexEsclave, tag=tagPossible)
-				print "look for source " + str(indexEsclave) + " and tag " + str(tagPossible)
-			pass
+		print "slave loop"
+		message = comm.Irecv(source = 1, tag=1)
+		print message
+		fileDesPb.put(message)
 		"""
 
 		pbNonFini = False

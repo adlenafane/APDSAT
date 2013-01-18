@@ -4,10 +4,11 @@ from simplifieSat import *
 
 def comportementEsclave(comm):
 	print "Hello! I'm rank %d from %d running in total..." % (comm.rank, comm.size)
-	return
+
 
 	data=comm.recv(source=0,tag=1)
-
+	print "Received " + str(data)
+	"""
 	#Recuperation de la liste des variables avec valeurs T pour True, F pour False et U pour Undefined
 	valeursVariables=data[0]
 	#Recuperation du Probleme SAT a traiter
@@ -27,3 +28,4 @@ def comportementEsclave(comm):
 	    pass
 	else:
 	    pass
+	"""

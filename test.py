@@ -27,7 +27,7 @@ for k in range(0,loadCnfFile("testCnf.cnf")[0]):
 print "Avec le jeu de variable aléatoire suivant:"
 print liste_de_var
 print "La simplification du problème sat donné dans testCnf.cnf donne:"
-print simplifieSat(cnf, liste_de_var)
+print simplifieSat(liste_de_var,cnf)
 print "\n"
 
 print "=== testSatOk ==="
@@ -40,16 +40,16 @@ print str(testSatOk([[False], [1]])) + " should be False"
 
 print "\n"
 print "=== simplifieSat ==="
-print "input: simplifieSat([[1, 2], [1], [2,3], [3]], ['U', 'T', 'F'])"
-print simplifieSat([[1, 2], [1], [2,3], [3]], ['U', 'T', 'F'])
+print "input: simplifieSat(['U', 'T', 'F'],[[1, 2], [1], [2,3], [3]])"
+print simplifieSat(['U', 'T', 'F'],[[1, 2], [1], [2,3], [3]])
 print "input [[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]] + ['U','F','U', 'T']"
-print simplifieSat([[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]], ['U','F','U', 'T'])
+print simplifieSat(['U','F','U', 'T'],[[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])
 
 print "\n"
 print "=== retireSingleton ==="
 testvar = [[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1]]
-print "input [[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1]] + ['U','F','U', 'T']"
-print retireSingleton(testvar, ['U','F','U', 'T'])
+print "input ['U','F','U', 'T'] + [[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1]]"
+print retireSingleton(['U','F','U','T'],testvar)
 
 print "\n"
 print "=== Répartion et ration des nombres ==="

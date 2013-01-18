@@ -9,5 +9,5 @@ def retireSingleton(varData,pbSat):
 			elif k<0 and varData[(-k)-1] == 'U':
 				k = abs(k)
 				varData[k-1] = 'F'
-	nouveauSat = simplifieSat(pbSat, varData)
+	nouveauSat = simplifieSat(varData,pbSat)
 	return [varData,nouveauSat]

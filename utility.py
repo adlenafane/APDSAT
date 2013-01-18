@@ -94,21 +94,13 @@ def calculClassementPositifsEtNegatifs(dicoPositifsNegatifs):
     #renvoie une liste contenant les numeros de variables classes par ordre croissant par rapport a leur ratio de repartition en xi et xibarre
     return sorted(dicoPositifsNegatifs, key=lambda key: dicoPositifsNegatifs[key])
 
-def calculClassementLitteraux(listeFrequence,listePositifsNegatifs):
+def calculClassementLitteraux(listeDeClauses):
     #Retourne une liste contenant le classement des litteraux par ordre decroissant
+    listeFrequence = calculClassementFrequence(findCountOfLitterals(listeDeClauses))
+    listePositifsNegatifs = calculClassementPositifsEtNegatifs(calculDuRatioDePositifsEtNegatifs(genererRepartitionDesPositifsEtNegatifs(listeDeClauses)))
     dicoClassement={}
     for i in range(0,len(listeFrequence)):
         dicoClassement[listeFrequence[i]]=i+1
     for i in range(0,len(listePositifsNegatifs)):
         dicoClassement[listePositifsNegatifs[i]]= dicoClassement[listePositifsNegatifs[i]] + (i+1)
-    return sorted(dicoClassement, key=lambda key: dicoClassement[key],reverse=True)
-
-
-
-
-
-
-
-
-            
-        
+    return sorted(dicoClassement, key=lambda key: dicoClassement[key],reverse=True)        

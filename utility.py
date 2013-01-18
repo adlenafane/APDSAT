@@ -103,4 +103,27 @@ def calculClassementLitteraux(listeDeClauses):
         dicoClassement[listeFrequence[i]]=i+1
     for i in range(0,len(listePositifsNegatifs)):
         dicoClassement[listePositifsNegatifs[i]]= dicoClassement[listePositifsNegatifs[i]] + (i+1)
-    return sorted(dicoClassement, key=lambda key: dicoClassement[key],reverse=True)        
+    return sorted(dicoClassement, key=lambda key: dicoClassement[key],reverse=True)
+
+def preTraitementSat(probleme):
+    #Recuperation de la liste des variables avec valeurs T pour True, F pour False et U pour Undefined
+    valeursVariables=probleme[0]
+    #Recuperation du Probleme SAT a traiter
+    problemeSAT=probleme[1]
+    
+    pb=simplifieSat(valeursVariables,problemeSAT)
+    pb=retireSingleton(pb)
+    
+    nouveauSat=pb[1]
+    resultat=testSatOk(nouveauSat)
+    
+    return pb[0],resultat
+
+def genererSousSat(var,pbSat):
+    resultat=[]
+    varDisjonction=calculClassementLitteraux(pbSat)[0]
+    var[varDisjonction]='T'
+    resultat.append([var,pbSat])
+    var[varDisjonction]='F'
+    resultat.append([var,pbSat])
+    return resultat

@@ -62,4 +62,4 @@ b=calculClassementPositifsEtNegatifs(calculDuRatioDePositifsEtNegatifs(genererRe
 print b
 print "Should be [3, 4, 2, 1]"
 print "Classement:"
-print calculClassementLitteraux(a,b)
+print calculClassementLitteraux([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])

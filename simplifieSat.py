@@ -50,4 +50,3 @@ def testSatOk(pbSat):
                 print "Clause: " + str(clause)
                 nouveauSat.append(clause)
     return nouveauSat
-

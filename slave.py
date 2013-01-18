@@ -4,6 +4,12 @@ from simplifieSat import *
 from utility import *
 from retireSingleton import *
 
+#Tag 1 signifie maitre envoie du travail a l esclave
+#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
+#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
+#Tag 4 signifie l'esclave envoie un pb au maitre
+
+
 def comportementEsclave(comm):
 	print "Hello! I'm rank %d from %d running in total..." % (comm.rank, comm.size)
 
@@ -11,25 +17,22 @@ def comportementEsclave(comm):
 	data=comm.recv(source=0,tag=1)
 	print "Received " + str(data)
 	
-    result=[]
+    resultat=[]
     for probleme in data:
-        #Recuperation de la liste des variables avec valeurs T pour True, F pour False et U pour Undefined
-        valeursVariables=probleme[0]
-        #Recuperation du Probleme SAT a traiter
-        problemeSAT=probleme[1]
+        valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
 
-        pb=simplifieSat(valeursVariables,problemeSAT)
-        nouveauSat,nouveauData=retireSingleton(pb)
-        result=testSatOk(nouveauSat)
-
-        if result==True:
-            #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
-            #On envoie au maitre la valeur des variables resolvant le probleme SAT
-            #comm.send(valeursVariables,dest=0,tag=2)
-            pass
-        elif result==False:
+        if resultatPreTraitement==True:
+        #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
+        #On envoie au maitre la valeur des variables resolvant le probleme SAT
+            comm.send(valeursVariables,dest=0,tag=2)
+        
+        elif resultatPreTraitement==False:
             #On envoie un message de type tag 3 au maître pour lui indiquer que le pb ne peut pas etre resolu
-            #comm.send(dest=0,tag=3)
-            pass
+            comm.send(dest=0,tag=3)
         else:
-            pass
+            resultat.append(genererSousSat(valeursVariables,resultatPreTraitement)[0])
+            resultat.append(genererSousSat(valeursVariables,resultatPreTraitement)[1])
+
+    print "Termine"
+    comm.send(result,dest=0,tag=4)
+

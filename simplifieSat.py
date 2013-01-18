@@ -25,6 +25,7 @@ sortie: un nouvelle clause simplifié avec l'état des variables passées en arg
                 return [True]
             elif varData[k-1]!='F':
                 clauseFausse = False
+        #Il faudrait enlever les litteraux faux des clauses 
         elif k<0:
             k = abs(k)
             if varData[k-1]=='F':

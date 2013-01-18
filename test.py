@@ -63,3 +63,22 @@ print b
 print "Should be [3, 4, 2, 1]"
 print "Classement:"
 print calculClassementLitteraux([[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])
+
+print "\n"
+print "=== Pretraitement ==="
+print preTraitementSat([['T','U','U','U'],[[1],[2, 3], [1, 2, 3, 4], [2], [-1,-4], [-2,-4]]])
+print "Resultat attendu: (['T', 'T', 'U', 'U'], [[-1, -4], [-2, -4]])"
+
+print "\n"
+print "=== Generation de sous-problemes SAT ==="
+print "input: ['T','T','U','U'],[[-1,-4], [-2,-4]]"
+print genererSousSat(['T','T','U','U'],[[-1,-4], [-2,-4]])
+print "Resultat attendu: [['T','T','U','T'],[[-1,-4], [-2,-4]],['T','T','U','F'],[[-1,-4], [-2,-4]]]"
+
+
+print "\n"
+print "=== Generation de sous-problemes SAT ==="
+print "input: ['T','U','U','U'],[[1],[-1,2, 3], [1, 2, -3, 4], [-1,2], [-1,-3], [1,-2,3]]"
+print genererSousSat(['T','U','U','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]])
+print "Resultat attendu: [[['T','U','T','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]]],[['T','U','F','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]]]]"
+

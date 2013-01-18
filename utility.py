@@ -1,5 +1,7 @@
 # -*- coding: cp1252 -*-
 # coding=utf-8
+from simplifieSat import *
+from retireSingleton import *
 
 def loadCnfFile(fileName='example.cnf'):
     """ retourne une liste contenant: le nombre de variables, puis le nombre de clauses, puis la liste de listes d'entiers decrivants la forme normale conjonctive"""
@@ -112,7 +114,7 @@ def preTraitementSat(probleme):
     problemeSAT=probleme[1]
     
     pb=simplifieSat(valeursVariables,problemeSAT)
-    pb=retireSingleton(pb)
+    pb=retireSingleton(valeursVariables,pb)
     
     nouveauSat=pb[1]
     resultat=testSatOk(nouveauSat)
@@ -120,10 +122,29 @@ def preTraitementSat(probleme):
     return pb[0],resultat
 
 def genererSousSat(var,pbSat):
+    varAffectationTrue=[]
+    varAffectationFalse=[]
+    lengthVar=len(var)
     resultat=[]
+    
+    #Recuperation de la variable sur laquelle on va effectuer la disjonction
     varDisjonction=calculClassementLitteraux(pbSat)[0]
-    var[varDisjonction]='T'
-    resultat.append([var,pbSat])
-    var[varDisjonction]='F'
-    resultat.append([var,pbSat])
+    
+    #On cree l'affectation des variables pour la valeur True de la variable de disjonction
+    for i in range(0,lengthVar):
+        if i==(varDisjonction-1):
+            varAffectationTrue.append('T')
+        else:
+            varAffectationTrue.append(var[i])
+
+    #On cree l'affectation des variables pour la valeur False de la variable de disjonction
+    for i in range(0,lengthVar):
+        if i==(varDisjonction-1):
+            varAffectationFalse.append('F')
+        else:
+            varAffectationFalse.append(var[i])
+    #On mets tt ca dans la liste resultat
+    resultat.append([varAffectationTrue,pbSat])
+    resultat.append([varAffectationFalse,pbSat])
+
     return resultat

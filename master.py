@@ -8,6 +8,7 @@ def comportementMaitre(comm, filename):
 	rank = comm.rank
 	size = comm.size
 	pbNonFini = True
+	tailleBatch = 2
 	print "Hello! I'm rank %d from %d running in total..." % (rank, size)
 
 	# On crée un tableau de taille le nombre de processeurs disponibles, 0 signifie esclave libre, 1 signifie esclave occupé et -1 pour le maitre
@@ -28,40 +29,25 @@ def comportementMaitre(comm, filename):
 	probleme = [varData, pbSat]
 	fileDesPb.put(probleme)
 
-	while(pbNonFini):
-		if fileDesPb.empty() == False:
-			probleme = fileDesPb.get()
-			varData = probleme[0]
-			pbSat = probleme[1]
-			print varData
-			print pbSat
-
-			variablesOrdonnees = calculClassementLitteraux(pbSat)
-			print variablesOrdonnees
-			
-			if esclaveDisponible >=1:
-				# On choisit la taille de notre branching comme étant le minimum entre les ressources disponibles et le nombre de variables sur lequel faire des branches
-				tailleBranching = min(int(log(esclaveDisponible)/log(2.0)), len(variablesOrdonnees))
-
-				# Testing purpose, en réalité le nouveau set de données doit être calculé mais encore des pb avec la fonction 
-				nouveauSetDeDonnees = [['U','U','T'], ['U','U','F']]
-				calculVariablesPourBranching(varData, variablesOrdonnees[:tailleBranching], nouveauSetDeDonnees)
-				# Envoi de tout ces nouveaux problèmes aux esclaves disponibles
-				for donnees in nouveauSetDeDonnees:
-					for indexEsclave in range(1, size):
+	while pbNonFini:
+		if fileDesPb.empty() == False and esclaveDisponible >=1:
+			batchDesProblemes = []
+			while fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch:
+				batchDesProblemes.append(fileDesPb.get())
+			for indexEsclave in range(1, size):
 						if listeEsclave[indexEsclave]==0:
 							listeEsclave[indexEsclave] = 1
 							esclaveDisponible = esclaveDisponible - 1
-							problemeAEnvoyer = [donnees, pbSat]
-							print problemeAEnvoyer
-							comm.send(problemeAEnvoyer, dest=indexEsclave, tag=1)
+							comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
 							break
+
+		"""
 		for indexEsclave in range(1, size):
 			for tagPossible in range(1,3):
 				#message = comm.irecv(source = indexEsclave, tag=tagPossible)
 				print "look for source " + str(indexEsclave) + " and tag " + str(tagPossible)
 			pass
-		
+		"""
 
 		pbNonFini = False
 	return

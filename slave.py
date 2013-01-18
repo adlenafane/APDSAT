@@ -14,9 +14,9 @@ def comportementEsclave(comm):
     print "Hello! I'm rank %d from %d running in total..." % (comm.rank, comm.size)
         
         
-        data=comm.recv(source=0,tag=1)
-        print "Received " + str(data)
-        resultat=[]
+    data=comm.recv(source=0,tag=1)
+    print "Received " + str(data)
+    resultat=[]
     for probleme in data:
         valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
         
@@ -33,4 +33,4 @@ def comportementEsclave(comm):
             resultat.append(genererSousSat(valeursVariables,resultatPreTraitement)[1])
     
     print "Termine"
-    comm.send(result,dest=0,tag=4)
+    comm.send(resultat,dest=0,tag=4)

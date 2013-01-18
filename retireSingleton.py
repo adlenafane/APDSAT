@@ -1,6 +1,6 @@
 from simplifieSat import *
 
-def retireSingleton(pbSat, varData):
+def retireSingleton(varData,pbSat):
 	for clause in pbSat:
 		if (len(clause) == 1) and (str(clause) != "[True]") and (str(clause) != "[False]"):
 			k = clause[0]
@@ -10,4 +10,4 @@ def retireSingleton(pbSat, varData):
 				k = abs(k)
 				varData[k-1] = 'F'
 	nouveauSat = simplifieSat(pbSat, varData)
-	return [nouveauSat, varData]
+	return [varData,nouveauSat]

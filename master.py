@@ -40,10 +40,11 @@ def comportementMaitre(comm, filename):
 		# Changer le nom de la fonction
 		variablesOrdonnees = variablesRestantes
 		# On choisit la taille de notre branching comme étant le minimum entre les ressources disponibles et le nombre de variables sur lequel faire des branches
-		tailleBranching = min(int(log(esclaveDisponible)/log(2)), len(variablesRestantes))
+		if esclaveDisponible >=1:
+			tailleBranching = min(int(log(esclaveDisponible)/log(2.0)), len(variablesRestantes))
 
-		nouveauSetDeDonnees = []
-		calculVariablesPourBranching(varData, variablesRestantes[:tailleBranching], nouveauSetDeDonnees)
+			nouveauSetDeDonnees = []
+			calculVariablesPourBranching(varData, variablesRestantes[:tailleBranching], nouveauSetDeDonnees)
 
 		pbNonFini = False
 	return

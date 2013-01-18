@@ -4,6 +4,8 @@ from utility import loadCnfFile, calculVariablesPourBranching, calculClassementL
 import Queue
 from math import log
 
+#Example assez complet en C++ sur un master qui distribue des jobs à ses esclaves: http://www.lam-mpi.org/tutorials/one-step/ezstart.php
+
 def comportementMaitre(comm, filename):
 	rank = comm.rank
 	size = comm.size
@@ -30,6 +32,8 @@ def comportementMaitre(comm, filename):
 	fileDesPb.put(probleme)
 
 	while pbNonFini:
+
+		#Envoit de travaux aux esclaves
 		if fileDesPb.empty() == False and esclaveDisponible >=1:
 			batchDesProblemes = []
 			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):  #on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.
@@ -43,12 +47,35 @@ def comportementMaitre(comm, filename):
 					print "Batch"
 					print batchDesProblemes
 					esclaveTrouve = True
+
+
+		# reception des travaux des esclaves:
 		"""
 		print "slave loop"
-		message = comm.Irecv(source = 1, tag=1)
+		message = comm.Irecv(source = 1, tag=1)  #comment on fait si dans le "buffer à messages recus" il y a plusieurs réponses (de plusieurs esclaves)? Il faudrait parcourir le buffer avec une boucle for...  https://groups.google.com/forum/#!msg/mpi4py/LDHbzApI55c/gENCO-_HAwUJ  et   https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/Y0HrQkaPeNs
 		print message
 		fileDesPb.put(message)
 		"""
 
-		pbNonFini = False
+		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoie de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
+		for esclave in range(1,size): #pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
+
+			message = comm.Irecv(source = esclave,tag=MPI.ANY_TAG) 
+			message.Test(status)
+				if status.Get_tag()==2:  		#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
+					print "Une solution a ete trouvee, il s'agit de:"
+					print str(message)
+					pbNonFini = False
+
+				elif status.get_tag()==3: 		#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
+					print "Ce probleme n'a pas de solution"
+					pbNonFini = False
+
+				elif status.get_tag()==4:		#Tag 4 signifie l'esclave envoie un pb au maitre
+					print "la resolution continue avec " + str(message)
+					esclaveDisponible+=1
+					fileDesPb.put(message) #a verifier que ca marche puisque message est une liste de 2 pbSat (qui euxmeme sont une liste de liste)
+
+
+		pbNonFini = False  #Ed: for testing only j'imagine 
 	return

@@ -34,4 +34,3 @@ def comportementEsclave(comm):
     
     print "Termine"
     comm.send(result,dest=0,tag=4)
-

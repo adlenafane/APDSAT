@@ -1,18 +1,18 @@
 # -*- coding: cp1252 -*-
 # coding=utf-8
 
-def simplifieSat(pbSat, varData):
+def simplifieSat(varData, pbSat):
     """ entrée: liste de liste(clauses) décrivant le pb sat, liste d'état des variables: T pour True, F pour False, U pour undecided.
 sortie: un nouveau problème sat simplifié avec l'état des variables passées en argument"""
     if len(pbSat)==0:
         return "Erreur: le probleme ne contient aucune clause !"
     nouveauSat = []
     for clause in pbSat:
-        nouvelleClause = simplifieClause(clause, varData)
+        nouvelleClause = simplifieClause(varData, clause)
         nouveauSat.append(nouvelleClause)
     return nouveauSat
 
-def simplifieClause(clause, varData):
+def simplifieClause(varData,clause):
     """ entrée: une clause, liste d'état des variables: T pour True, F pour False, U pour undecided.
 sortie: un nouvelle clause simplifié avec l'état des variables passées en argument"""
     if len(clause)==0:

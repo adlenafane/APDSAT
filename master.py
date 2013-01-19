@@ -3,6 +3,7 @@ from mpi4py import MPI
 from utility import loadCnfFile, calculVariablesPourBranching, calculClassementLitteraux
 import Queue
 from math import log
+import sys
 
 #Example assez complet en C++ sur un master qui distribue des jobs à ses esclaves: http://www.lam-mpi.org/tutorials/one-step/ezstart.php
 
@@ -25,7 +26,7 @@ def comportementMaitre(comm, filename):
 	nombreDeVariables = donneesInitiales[0]
 	nombreDeClauses = donneesInitiales[1]	
 	pbSat = donneesInitiales[2]
-
+	bufferSize = sys.getsizeof(pbSat)
 	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
 	varData = ['U']*nombreDeVariables
 	probleme = [varData, pbSat]
@@ -57,15 +58,13 @@ def comportementMaitre(comm, filename):
 		fileDesPb.put(message)
 		"""
 
-		"""
+		
 		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
 		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
-		for esclave in range(1,size): 
-			reception = []
-			#message = comm.Irecv(self, reception, source=esclave, tag=MPI.ANY_TAG)
-			message = comm.irecv()
-			MPI.
-			message.Test(status)
+		for indexEsclave in range(1,size): 
+			message = []
+			request_instance = comm.irecv()
+			request_instance.Wait()
 			#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
 			if status.Get_tag()==2:
 				print "Une solution a ete trouvee, il s'agit de:"
@@ -84,7 +83,7 @@ def comportementMaitre(comm, filename):
 				esclaveDisponible+=1
 				for pb in message:
 					fileDesPb.put(pb)
-		"""
+		
 		pbNonFini = False
 	message = ""
 	for indexEsclave in range(1, size):

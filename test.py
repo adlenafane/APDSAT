@@ -43,7 +43,7 @@ print "=== simplifieSat ==="
 print "input: simplifieSat(['U', 'T', 'F'],[[1, 2], [1], [2,3], [3]])"
 print simplifieSat(['U', 'T', 'F'],[[1, 2], [1], [2,3], [3]])
 print "input [[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]] + ['U','F','U', 'T']"
-print simplifieSat(['U','F','U', 'T'],[[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [-2]])
+print simplifieSat(['U','F','U', 'T'],[[True],[False],[1],[2, 3], [1, 2, 3, 4], [2], [-1], [2, 3]])
 
 print "\n"
 print "=== retireSingleton ==="

@@ -16,26 +16,28 @@ def simplifieClause(varData,clause):
     """ entrée: une clause, liste d'état des variables: T pour True, F pour False, U pour undecided.
 sortie: un nouvelle clause simplifié avec l'état des variables passées en argument"""
     if len(clause)==0:
+        # Si la clause est vide, c'est ptet qu'on a viré un F un peu salement non? On pourrait faire un check de clause non vide dans le Load
         return "Erreur: la clause ne contient aucun litteral !"
     # On suppose que la clause est fausse et si on trouve autre chose qu'un 'F' on modifiera la clause
     clauseFausse = True
+    nouvelleClause = []
     for k in clause:
         if k>0:
             if varData[k-1]=='T':
                 return [True]
-            elif varData[k-1]!='F':
+            elif varData[k-1]=='U':
+                nouvelleClause.append(k)
                 clauseFausse = False
-        #Il faudrait enlever les litteraux faux des clauses 
         elif k<0:
-            k = abs(k)
-            if varData[k-1]=='F':
+            if varData[abs(k)-1]=='F':
                 return [True]
-            elif varData[k-1]!='T':
+            elif varData[abs(k)-1]=='U':
+                nouvelleClause.append(k)
                 clauseFausse = False
     # Si clauseFausse est restee vraie, cela signifie qu'on a vu au moins une clause non fausse
     if clauseFausse == True:
         return [False]
-    return clause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
+    return nouvelleClause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
 
 
 def testSatOk(pbSat):

@@ -48,34 +48,45 @@ def comportementMaitre(comm, filename):
 					print batchDesProblemes
 					esclaveTrouve = True
 
-
-		# reception des travaux des esclaves:
 		"""
+		# reception des travaux des esclaves:
 		print "slave loop"
-		message = comm.Irecv(source = 1, tag=1)  #comment on fait si dans le "buffer à messages recus" il y a plusieurs réponses (de plusieurs esclaves)? Il faudrait parcourir le buffer avec une boucle for...  https://groups.google.com/forum/#!msg/mpi4py/LDHbzApI55c/gENCO-_HAwUJ  et   https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/Y0HrQkaPeNs
+		#comment on fait si dans le "buffer à messages recus" il y a plusieurs réponses (de plusieurs esclaves)? Il faudrait parcourir le buffer avec une boucle for...  https://groups.google.com/forum/#!msg/mpi4py/LDHbzApI55c/gENCO-_HAwUJ  et   https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/Y0HrQkaPeNs
+		message = comm.Irecv(source = 1, tag=1)  
 		print message
 		fileDesPb.put(message)
 		"""
 
-		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoie de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
-		for esclave in range(1,size): #pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
-
-			message = comm.Irecv(source = esclave,tag=MPI.ANY_TAG) 
+		"""
+		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
+		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
+		for esclave in range(1,size): 
+			reception = []
+			#message = comm.Irecv(self, reception, source=esclave, tag=MPI.ANY_TAG)
+			message = comm.irecv()
+			MPI.
 			message.Test(status)
-				if status.Get_tag()==2:  		#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
-					print "Une solution a ete trouvee, il s'agit de:"
-					print str(message)
-					pbNonFini = False
+			#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
+			if status.Get_tag()==2:
+				print "Une solution a ete trouvee, il s'agit de:"
+				print str(message)
+				pbNonFini = False
 
-				elif status.get_tag()==3: 		#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
-					print "Ce probleme n'a pas de solution"
-					pbNonFini = False
+			#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
+			elif status.get_tag()==3:
+				print "Cette branche n'a pas de solution"
+				# On ne peut pas arrêter la résolution du pb, celui peut avoir une solution sur une autre branche, c'est juste la branche qu'on kill
+				#pbNonFini = False
 
-				elif status.get_tag()==4:		#Tag 4 signifie l'esclave envoie un pb au maitre
-					print "la resolution continue avec " + str(message)
-					esclaveDisponible+=1
-					fileDesPb.put(message) #a verifier que ca marche puisque message est une liste de 2 pbSat (qui euxmeme sont une liste de liste)
-
-
-		pbNonFini = False  #Ed: for testing only j'imagine 
+			#Tag 4 signifie l'esclave envoie un pb au maitre
+			elif status.get_tag()==4:
+				print "la resolution continue avec " + str(message)
+				esclaveDisponible+=1
+				for pb in message:
+					fileDesPb.put(pb)
+		"""
+		pbNonFini = False
+	message = ""
+	for indexEsclave in range(1, size):
+		comm.send(message, dest=indexEsclave, tag=2)
 	return

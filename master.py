@@ -95,13 +95,13 @@ def comportementMaitre(comm, filename):
 				#Tag 4 signifie l'esclave envoie un pb au maitre
 				elif status.Get_tag()==4:
 					print "la resolution continue avec " + str(message)
+					listeEsclave[indexEsclave] = 0
 					esclaveDisponible+=1
 					for pb in message:
 						fileDesPb.put(pb)
 						print pb
 					pbNonFini = True
-		# Testing purpose
-		pbNonFini = False
+		print "Master end of loop"
 	message = "message de fin"
 	print message
 	for indexEsclave in range(1, size):

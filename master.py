@@ -4,9 +4,10 @@ from utility import *
 import Queue
 from math import log
 
-start = time.time()
+
 
 def comportementMaitre(comm, filename):
+	start = time.time()
 	rank = comm.rank
 	size = comm.size
 	pbNonFini = True

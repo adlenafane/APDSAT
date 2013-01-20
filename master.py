@@ -61,7 +61,7 @@ def comportementMaitre(comm, filename):
 
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
 				elif status.Get_tag()==3:
-					print "Cette branche n'a pas de solution"
+					print "Cette branche n'a pas de solution d'apres le processus " + str(indexEsclave)
 					# On ne peut pas arrêter la résolution du pb, celui peut avoir une solution sur une autre branche, c'est juste la branche qu'on kill
 					#pbNonFini = False
 				#Tag 4 signifie l'esclave envoie un pb au maitre

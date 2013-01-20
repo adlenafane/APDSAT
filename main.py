@@ -6,7 +6,7 @@ comm = MPI.COMM_WORLD
 
 if comm.rank == 0:
 	# Master
-	filename = 'uf20-09.cnf'
+	filename = 'uf20-01.cnf'
 	comportementMaitre(comm, filename)
 else:
 	# Slave

@@ -211,7 +211,6 @@ def simplifieClause(varData,clause):
     # Si clauseFausse est restee vraie, cela signifie qu'on a vu au moins une clause non fausse
     if clauseFausse == True:
         return [False]
-
     return nouvelleClause #cette ligne n'est atteinte que si le programme n'est pas entré dans le if ou le elif ci-dessus
 
 

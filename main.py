@@ -5,7 +5,7 @@ import argparse
 import socket
 
 parser = argparse.ArgumentParser(description='ArgumentParser')
-parser.add_argument('--file', default='uf20-010.cnf')
+parser.add_argument('--file', default='uf20-01.cnf')
 parser.add_argument('--batch', default=4)
 args = parser.parse_args()
 

@@ -27,6 +27,8 @@ def comportementMaitre(comm, filename):
 	pbSat = donneesInitiales[2]
 	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
 	varData = ['U']*nombreDeVariables
+	# DEBUG
+	#varData = ['F', 'T', 'T', 'F', 'F', 'T', 'F', 'T', 'F', 'T', 'T', 'T', 'T', 'F', 'T', 'T', 'T', 'F', 'F', 'F']
 	probleme = [varData, pbSat]
 	fileDesPb.put(probleme)
 

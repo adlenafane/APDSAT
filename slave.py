@@ -16,7 +16,10 @@ def comportementEsclave(comm):
     while status.Get_tag() != 5:
         resultat=[]
         for probleme in data:
+            #print "Try to solve"
             valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
+            #print valeursVariables
+            #print resultatPreTraitement
             if resultatPreTraitement==True:
                 #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
                 #On envoie au maitre la valeur des variables resolvant le probleme SAT

@@ -122,8 +122,13 @@ def preTraitementSat(probleme):
     problemeSAT=probleme[1]
 
     #Etapes de simplification:
+    #print "On est dans preTraitementSat"
     pb=simplifieSat(valeursVariables,problemeSAT)
+    #print "\nVoici le pb après le premier simplifieSat"
+    #print pb
     pb=retireSingleton(valeursVariables,pb)
+    #print "\nVoici le pb après retireSingleton"
+    #print pb
     nouveauSat=pb[1]
     resultat=testSatOk(nouveauSat)   
     
@@ -175,8 +180,7 @@ def simplifieSat(varData, pbSat):
         return "Erreur: le probleme ne contient aucune clause !"
     nouveauSat = []
     for clause in pbSat:
-        nouvelleClause = simplifieClause(varData, clause)
-        nouveauSat.append(nouvelleClause)
+        nouveauSat.append(simplifieClause(varData, clause))
     return nouveauSat
 
 
@@ -195,7 +199,13 @@ def simplifieClause(varData,clause):
     clauseFausse = True
     nouvelleClause = []
     for k in clause:
-        if k>0:
+        # Ne pas supprimer les clauses ne valant que [True]
+        #print "Voici k"
+        #print k
+        if str(k) == "True":
+        	clauseFausse = False
+        	nouvelleClause = [True]
+        elif k>0:
             if varData[k-1]=='T':
                 return [True]
             elif varData[k-1]=='U':
@@ -207,6 +217,7 @@ def simplifieClause(varData,clause):
             elif varData[abs(k)-1]=='U':
                 nouvelleClause.append(k)
                 clauseFausse = False
+        
 
     # Si clauseFausse est restee vraie, cela signifie qu'on a vu au moins une clause non fausse
     if clauseFausse == True:
@@ -249,5 +260,8 @@ def retireSingleton(varData,pbSat):
             elif k<0 and varData[(-k)-1] == 'U':
                 k = abs(k)
                 varData[k-1] = 'F'
+    #print "\nNous sommes dans retireSingleton"
     nouveauSat = simplifieSat(varData,pbSat)
+	#print "Voici nouveauSat après l'avoir simplifié dans retireSingleton"
+    #print nouveauSat
     return [varData,nouveauSat]

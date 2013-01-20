@@ -6,11 +6,6 @@ from retireSingleton import *
 
 
 cnf=loadCnfFile("testCnf.cnf")[2]
-print "=== calculVariablesPourBranching ==="
-resultat = []
-print calculVariablesPourBranching(['U','U','U'], [2,1,3], resultat)
-print resultat
-print len(resultat)
 print "la clause contenue dans testCnf.cnf est la suivante:"
 print cnf
 print "\n"
@@ -82,3 +77,16 @@ print "input: ['T','U','U','U'],[[1],[-1,2, 3], [1, 2, -3, 4], [-1,2], [-1,-3], 
 print genererSousSat(['T','U','U','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]])
 print "Resultat attendu: [[['T','U','T','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]]],[['T','U','F','U'],[[1],[2, 3], [1, 2, -3, 4], [2], [-1,-3], [-2,3]]]]"
 
+print
+pb = loadCnfFile('uf20-09.cnf')
+print simplifieSat(['F', 'T', 'T', 'F', 'F', 'T', 'F', 'T', 'F', 'T', 'T', 'T', 'T', 'F', 'T', 'T', 'T', 'F', 'F', 'F'], pb[2])
+['U', 'T', 'U', 'U', 'F', 'T', 'F', 'T', 'F', 'T', 'T', 'T', 'T', 'F', 'T', 'T', 'T', 'F', 'F', 'F'], pb[2]
+
+pb = [[True], [True], [True]]
+print pb
+pb = simplifieSat(['T','T'], pb)
+print pb
+pb = simplifieSat(['T','T'], pb)
+print pb
+pb = simplifieSat(['T','T'], pb)
+print pb

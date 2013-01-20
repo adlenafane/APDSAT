@@ -24,7 +24,6 @@ def comportementEsclave(comm):
                 #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
                 #On envoie au maitre la valeur des variables resolvant le probleme SAT
                 comm.send(valeursVariables,dest=0,tag=2)
-                return
             
             elif resultatPreTraitement==False:
                 #On envoie un message de type tag 3 au maître pour lui indiquer que le pb ne peut pas etre resolu

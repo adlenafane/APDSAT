@@ -18,9 +18,12 @@ def main(args):
 		tailleBatch = int(args.batch)
 		result = comportementMaitre(comm, filename, tailleBatch)
 		# Ecris les resultats dans un fichier
-		with open('resultatParallele.txt', 'a') as resultFile:
-			resultFile.write(str(filename) + "," + str(result[0])  + "," + str(result[1]) + "," + str(result[2]) + "," + str(result[3]) + "," + str(result[4]) + "," + str(result[5]) + "," + str(socket.gethostname()))
-			resultFile.write("\n")
+		try:
+			with open('resultatParallele.txt', 'a') as resultFile:
+				resultFile.write(str(filename) + "," + str(result[0])  + "," + str(result[1]) + "," + str(result[2]) + "," + str(result[3]) + "," + str(result[4]) + "," + str(result[5]) + "," + str(socket.gethostname()))
+				resultFile.write("\n")
+		except IOError as e:
+			print 'Operation failed: %s' % e.strerror
 		return result
 	else:
 		# Slave

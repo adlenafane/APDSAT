@@ -61,6 +61,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 					elapsed = (time.time() - start)
 					print "La solution a ete trouvee en:" + "%.5f" %elapsed
 					resultat = True
+					indexDernierEsclave = indexEsclave
 					pbNonFini = False
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
 				elif status.Get_tag()==3:

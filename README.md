@@ -1,65 +1,12 @@
-#TODO
+Pre-requis:
+* Python
+* Une bibliothèque MPI (MPICH2, OpenMPI...)
+* mpi4py
 
-- [ ] *Fonction pour évaluer la valeur d'une clause en fonction des litéraux (T, F, [littéraux restants])*  
-```
-simplifieClause(Clause)  
-	return nouvelleClause 
-```
+Pour executer l'algorithme:
+* lancer en ligne de commande "mpiexec -n 4 python main.py" lancera le script sur 4 processus, par defaut le script s'execute sur 'uf20-01.cnf'
+* le fichier main.py permet de rajouter des arguments complementaires:
+		* --file "monFichier.cnf" permet d'executer le script en chargeant la forme normale conjonctive definie dans "monFichier.cnf". Le Dossier "Data" contient des exemples de fichiers CNF trouvés sur internet, et permettant de vérifier notre algorithme.
+		* --batch permet de modifier la taille des messages envoyés par le maitre aux esclaves. Par exemple avec "--batch 8", le message du maitre aux esclaves contiendra 8 problemes.
 
-- [x] *Fonction pour évaluer le nouveau SAT en fonction des valeurs des littéraux*  
-```
-simplifieSAT ([pbSAT], [data])  
-	for clause in [pbSAT]  
-		nvlleClause = simplifierClause(clause)  
-		[nouveauSAT].append(nvlleclause)  
-	return [nouveuSAT]  
-```
 
-- [x] *Evalue le pb SAT et renvoie soit un message de fin soit un nouveau pbSAT*  
-```
-testSAT([pbSAT])  
-	if [pbSAT]  
-		return youpi  
-	for clause in [pbSAT]  
-		if clause == F  
-			return dead  
-		else  
-			if clause != T  
-				[nouveauSAT].append(clause)  
-```
-
-- [x] *Parcours les clauses et modifie les données en conséquence  
-Note: Ne pas oublier de réappliquer simplifieSAT lorsqu'on modifie une variable*  
-```
-removeSingletonClauses([pbSAT])  
-	return([pbSAT], [data])  
-```
-
-- [ ] *Calcul la fréquence d'apparition de chaque variable*  
-```
-calculfrequence([pbSAT])  
-	return listeOrDicoVariableCount  
-```
-
-- [ ] *Renvoyer les 2 messages au maitre*  
-```
-renvoyerResultatAuMaitre(SAT1, data1, branch)  
-	envoyerMessageMaitre(SAT1, data avec le branch à T)  
-	envoyerMessageMaitre(SAT1, data avec le branch à F)  
-```
-
-- [ ] *Maitre gérer la pile et les messages (reception et emission)*  
-  
-- [ ] *Esclave*  
-```
-SAT1 = simplifieSAT(SAT0, data0)  
-resultTemp = removeSingletonClause(SAT1, data0)  
-SAT1 = resultTemp[0]  
-data1 = resultTemp[1]  
-	if (testSAT(SAT1) == message)  
-		envoieMessageAuMaitre  
-	else   
-		SAT1 = testSAT(SAT1)  
-		dico = calculFrequence(SAT1)  
-		renvoyerResultatAuMaitre(SAT1, data1, branch)  
-```

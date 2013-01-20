@@ -218,7 +218,7 @@ def simplifieClause(varData,clause):
 def testSatOk(pbSat):
     """
     Cette fonction teste le probleme donne en arguement:
-    Si le probleme est vide, renvoie True 
+    Si le probleme est vide ou ne contient que des clauses True, renvoie True 
     Si le probleme contient une clause False, renvoie False
     Sinon, renvoie un nouveau probleme epure des clauses "True"
     """
@@ -230,8 +230,9 @@ def testSatOk(pbSat):
             return False
         else:
             if str(clause) != "[True]":
-                print "Clause: " + str(clause)
                 nouveauSat.append(clause)
+    if nouveauSat == []:
+    	return True
     return nouveauSat
 
 

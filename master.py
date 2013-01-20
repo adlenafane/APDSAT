@@ -43,30 +43,9 @@ def comportementMaitre(comm, filename):
 					listeEsclave[indexEsclave] = 1
 					esclaveDisponible = esclaveDisponible - 1
 					comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
-					print "Batch"
-					print batchDesProblemes
+					#print "Batch"
+					#print batchDesProblemes
 					esclaveTrouve = True
-
-		"""
-		# reception des travaux des esclaves:
-		print "slave loop"
-		#comment on fait si dans le "buffer à messages recus" il y a plusieurs réponses (de plusieurs esclaves)? Il faudrait parcourir le buffer avec une boucle for...  https://groups.google.com/forum/#!msg/mpi4py/LDHbzApI55c/gENCO-_HAwUJ  et   https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/Y0HrQkaPeNs
-		message = comm.Irecv(source = 1, tag=1)  
-		print message
-		fileDesPb.put(message)
-		"""
-		"""
-		buf = array("c", '\0')*256
-		request_instance = comm.Irecv(buf, source = MPI.ANY_SOURCE)
-		status = MPI.Status()
-		request_instance.Test(status)
-		n = status.Get_count(MPI.CHAR)
-		s = buf[:n].tostring()
-		print s
-		print request_instance
-		print status
-		print status.Get_tag()
-		"""
 		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
 		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
 		for indexEsclave in range(1,size):
@@ -74,13 +53,10 @@ def comportementMaitre(comm, filename):
 				#status = MPI.Status()
 				status = MPI.Status()
 				message = comm.recv(source=indexEsclave, tag = MPI.ANY_TAG, status= status)
-				print status
-				print status.Get_source()
-				print status.Get_tag()
 				#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
 				if status.Get_tag()==2:
 					print "Une solution a ete trouvee, il s'agit de:"
-					print str(request_instance)
+					#print str(message)
 					pbNonFini = False
 
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
@@ -91,16 +67,13 @@ def comportementMaitre(comm, filename):
 
 				#Tag 4 signifie l'esclave envoie un pb au maitre
 				elif status.Get_tag()==4:
-					print "la resolution continue avec " + str(message)
+					#print "la resolution continue avec " + str(message)
 					listeEsclave[indexEsclave] = 0
 					esclaveDisponible+=1
 					for pb in message:
 						fileDesPb.put(pb)
-						print pb
 					pbNonFini = True
-		print "Master end of loop"
-	message = "message de fin"
 	print message
 	for indexEsclave in range(1, size):
-		comm.send(message, dest=indexEsclave, tag=5)
+		comm.send("", dest=indexEsclave, tag=5)
 	return

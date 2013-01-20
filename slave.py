@@ -16,7 +16,6 @@ def comportementEsclave(comm):
     while status.Get_tag() != 5:
         resultat=[]
         for probleme in data:
-            print "Slave in for in while"
             valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
             if resultatPreTraitement==True:
                 #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
@@ -33,5 +32,5 @@ def comportementEsclave(comm):
 
         comm.send(resultat,dest=0,tag=4)
         data=comm.recv(source=0,tag = MPI.ANY_TAG, status= status)
-        print "End message Received"
+    print "End message Received"
     return

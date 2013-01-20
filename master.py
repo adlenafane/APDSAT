@@ -56,7 +56,7 @@ def comportementMaitre(comm, filename):
 				#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
 				if status.Get_tag()==2:
 					print "Une solution a ete trouvee, il s'agit de:"
-					#print str(message)
+					print str(message)
 					pbNonFini = False
 
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
@@ -64,7 +64,6 @@ def comportementMaitre(comm, filename):
 					print "Cette branche n'a pas de solution"
 					# On ne peut pas arrêter la résolution du pb, celui peut avoir une solution sur une autre branche, c'est juste la branche qu'on kill
 					#pbNonFini = False
-
 				#Tag 4 signifie l'esclave envoie un pb au maitre
 				elif status.Get_tag()==4:
 					#print "la resolution continue avec " + str(message)
@@ -73,7 +72,9 @@ def comportementMaitre(comm, filename):
 					for pb in message:
 						fileDesPb.put(pb)
 					pbNonFini = True
-	print message
+		if fileDesPb.empty() and esclaveDisponible == size-1:
+			print "Le probleme n'a pas de solution"
+			pbNonFini = False
 	for indexEsclave in range(1, size):
 		comm.send("", dest=indexEsclave, tag=5)
 	return

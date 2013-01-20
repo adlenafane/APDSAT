@@ -4,7 +4,7 @@ from utility import *
 import Queue
 from math import log
 
-#Example assez complet en C++ sur un master qui distribue des jobs à ses esclaves: http://www.lam-mpi.org/tutorials/one-step/ezstart.php
+start = time.time()
 
 def comportementMaitre(comm, filename):
 	rank = comm.rank
@@ -59,6 +59,8 @@ def comportementMaitre(comm, filename):
 				if status.Get_tag()==2:
 					print "Une solution a ete trouvee, il s'agit de:"
 					print str(message)
+					elapsed = (time.time() - start)
+					print "La solution a ete trouvee en:" + str(elapsed)
 					pbNonFini = False
 
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
@@ -75,7 +77,8 @@ def comportementMaitre(comm, filename):
 						fileDesPb.put(pb)
 					pbNonFini = True
 		if fileDesPb.empty() and esclaveDisponible == size-1:
-			print "Le probleme n'a pas de solution"
+			elapsed = (time.time() - start)
+			print "Le probleme n'a pas de solution. Temps écoulé:" + str(elapsed)
 			pbNonFini = False
 	for indexEsclave in range(1, size):
 		comm.send("", dest=indexEsclave, tag=5)

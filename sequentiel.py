@@ -2,10 +2,16 @@
 from utility import *
 import Queue
 import time
+import argparse
+import socket
+
+parser = argparse.ArgumentParser(description='ArgumentParser')
+parser.add_argument('--file', default='uf20-010.cnf')
+args = parser.parse_args()
 
 start = time.time()
 pbNonFini = True
-filename = 'uf20-010.cnf'
+filename = args.file
 # File d'attente des problèmes à gérer composée de tableaux de taille 2 de la forme [état_des_variables, clauses_à_résoudre]
 fileDesPb = Queue.Queue()
 
@@ -41,5 +47,5 @@ print "Temps ecoule: " + "%.5f" %elapsed + " secondes"
 
 # Ecris les resultats dans un fichier
 with open('resultatParallele.txt', 'a') as resultFile:
-    resultFile.write(str(filename) + "," + "1"  + "," + "1" + "," + str(nombreDeVariables) + "," + str(nombreDeClauses) + "," + str(result) + "," + str(elapsed))
+    resultFile.write(str(filename) + "," + "1"  + "," + "1" + "," + str(nombreDeVariables) + "," + str(nombreDeClauses) + "," + str(result) + "," + str(elapsed) + "," + str(socket.gethostname()))
     resultFile.write("\n")

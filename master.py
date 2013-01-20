@@ -5,12 +5,11 @@ import Queue
 from math import log
 import time
 
-def comportementMaitre(comm, filename):
+def comportementMaitre(comm, filename, tailleBatch):
 	start = time.time()
 	rank = comm.rank
 	size = comm.size
 	pbNonFini = True
-	tailleBatch = 2
 	print "Hello! I'm rank %d from %d running in total..." % (rank, size)
 
 	# On crée un tableau de taille le nombre de processeurs disponibles, 0 signifie esclave libre, 1 signifie esclave occupé et -1 pour le maitre

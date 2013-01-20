@@ -1,11 +1,18 @@
-filename, size, tailleBatch, nombreDeVariables, nombreDeClauses, resultat, elapsed
-uf20-010.cnf,5,2,20,91,True,0.0739998817444
-uf20-010.cnf,5,2,20,91,True,0.0979998111725
-uf20-010.cnf,5,2,20,91,True,0.214999914169
-uf20-010.cnf,5,2,20,91,True,0.160999774933
-uf20-010.cnf,5,2,20,91,True,0.447000026703
-uf20-010.cnf,5,2,20,91,True,0.0859999656677
-uf20-010.cnf,5,2,20,91,True,0.102999925613
-uf20-010.cnf,5,2,20,91,True,0.0889999866486
-uf20-010.cnf,5,2,20,91,True,0.0929999351501
-uf20-010.cnf,5,2,20,91,True,0.104000091553
+filename, size, tailleBatch, nombreDeVariables, nombreDeClauses, resultat, elapsed, hostname
+uf20-010.cnf,5,2,20,91,True,0.0739998817444,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.0979998111725,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.214999914169,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.160999774933,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.447000026703,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.0859999656677,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.102999925613,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.0889999866486,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.0929999351501,Adlen-PC
+uf20-010.cnf,5,2,20,91,True,0.104000091553,Adlen-PC
+uf20-010.cnf,5,4,20,91,True,0.138000011444,Adlen-PC
+uf20-010.cnf,1,1,20,91,True,0.0590000152588,Adlen-PC
+uf20-010.cnf,5,4,20,91,True,0.549000024796,Adlen-PC
+uf20-010.cnf,1,1,20,91,True,0.058000087738,Adlen-PC
+uf20-010.cnf,5,4,20,91,True,0.0789999961853,Adlen-PC
+uf20-010.cnf,1,1,20,91,True,0.058000087738,Adlen-PC
+uf20-010.cnf,8,4,20,91,True,0.198000192642,Adlen-PC

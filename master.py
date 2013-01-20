@@ -1,10 +1,8 @@
 # coding=utf-8
 from mpi4py import MPI
-from utility import loadCnfFile, calculVariablesPourBranching, calculClassementLitteraux
+from utility import *
 import Queue
 from math import log
-import sys
-from array import array
 
 #Example assez complet en C++ sur un master qui distribue des jobs à ses esclaves: http://www.lam-mpi.org/tutorials/one-step/ezstart.php
 
@@ -27,7 +25,6 @@ def comportementMaitre(comm, filename):
 	nombreDeVariables = donneesInitiales[0]
 	nombreDeClauses = donneesInitiales[1]	
 	pbSat = donneesInitiales[2]
-	bufferSize = sys.getsizeof(pbSat)
 	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
 	varData = ['U']*nombreDeVariables
 	probleme = [varData, pbSat]

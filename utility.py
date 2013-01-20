@@ -1,7 +1,5 @@
 # -*- coding: cp1252 -*-
 # coding=utf-8
-from simplifieSat import *
-from retireSingleton import *
 
 def loadCnfFile(fileName='example.cnf'):
     """ 
@@ -23,63 +21,63 @@ def loadCnfFile(fileName='example.cnf'):
 
 
 def findCountOfLitterals(listOfClauses):
-	"""
-	entree: un probleme Sat (une liste de clauses)
-	Renvoie un dictionnaire donant la frequence d'apparition dans la liste de clauses pour chaque litteral.
-	"""
-	countOfLitterals = {}
-	# Parcours de toutes les clauses pour prendre les valeurs absolues
-	for clause in listOfClauses:
-		# Applique la fonction abs a chaque element de la clause
-		tempClause = map(abs, clause)
-		# Met a jour le compte des litteraux en parcourant la clause en valeur absolue
-		for litteral in tempClause:
-			# Si le litteral existe dans le dictionnaire on ajoute 1
-			if litteral in countOfLitterals:
-				countOfLitterals[litteral] += 1
-			# Sinon on cree la cle
-			else:
-				countOfLitterals[litteral] = 1
-	return countOfLitterals
+    """
+    entree: un probleme Sat (une liste de clauses)
+    Renvoie un dictionnaire donant la frequence d'apparition dans la liste de clauses pour chaque litteral.
+    """
+    countOfLitterals = {}
+    # Parcours de toutes les clauses pour prendre les valeurs absolues
+    for clause in listOfClauses:
+        # Applique la fonction abs a chaque element de la clause
+        tempClause = map(abs, clause)
+        # Met a jour le compte des litteraux en parcourant la clause en valeur absolue
+        for litteral in tempClause:
+            # Si le litteral existe dans le dictionnaire on ajoute 1
+            if litteral in countOfLitterals:
+                countOfLitterals[litteral] += 1
+            # Sinon on cree la cle
+            else:
+                countOfLitterals[litteral] = 1
+    return countOfLitterals
 
 
 
 def genererRepartitionDesPositifsEtNegatifs(listeDeClauses):
-	"""
-	Renvoie un dictionnaire avec pour chaque litteral une liste contenant le nbr d apparitions positives et negatives dans le probleme SAT
-	"""
-	result={}
-	for clause in listeDeClauses:
-		for litteral in clause:
-			if abs(litteral) in result:
-				if litteral>0:
-					result[abs(litteral)][0]=result[abs(litteral)][0]+1
-				elif litteral<0:
-					result[abs(litteral)][1]=result[abs(litteral)][1]+1
-				else:
-					return "Error - 0 in listeDeClauses"
+    """
+    Renvoie un dictionnaire avec pour chaque litteral une liste contenant le nbr d apparitions positives et negatives dans le probleme SAT
+    """
+    result={}
+    for clause in listeDeClauses:
+        for litteral in clause:
+            if abs(litteral) in result:
+                if litteral>0:
+                    result[abs(litteral)][0]=result[abs(litteral)][0]+1
+                elif litteral<0:
+                    result[abs(litteral)][1]=result[abs(litteral)][1]+1
+                else:
+                    return "Error - 0 in listeDeClauses"
 
-			else:
-				if litteral>0:
-					result[abs(litteral)]=[1,0]
-				elif litteral<0:
-					result[abs(litteral)]=[0,1]
-				else:
-					return "Error - 0 in listeDeClauses"
-	return result
+            else:
+                if litteral>0:
+                    result[abs(litteral)]=[1,0]
+                elif litteral<0:
+                    result[abs(litteral)]=[0,1]
+                else:
+                    return "Error - 0 in listeDeClauses"
+    return result
 
 
 def calculDuRatioDePositifsEtNegatifs(dictionnaireDeRepartitionDesClausesEnPositifEtNegatif):
-	"""
-	Prend en entree le resultat de la fonction genererRepartitionDesPositifsEtNegatifs
-	Calcule le ratio de repartion entre xi et xibarre pour chaque litteral
-	"""
+    """
+    Prend en entree le resultat de la fonction genererRepartitionDesPositifsEtNegatifs
+    Calcule le ratio de repartion entre xi et xibarre pour chaque litteral
+    """
 
-	result={}
-	for litteral in dictionnaireDeRepartitionDesClausesEnPositifEtNegatif:
-		litteralDistributionList=dictionnaireDeRepartitionDesClausesEnPositifEtNegatif[litteral]
-		result[litteral]=1-abs(float(litteralDistributionList[0]-litteralDistributionList[1])/(litteralDistributionList[0]+litteralDistributionList[1]))
-	return result
+    result={}
+    for litteral in dictionnaireDeRepartitionDesClausesEnPositifEtNegatif:
+        litteralDistributionList=dictionnaireDeRepartitionDesClausesEnPositifEtNegatif[litteral]
+        result[litteral]=1-abs(float(litteralDistributionList[0]-litteralDistributionList[1])/(litteralDistributionList[0]+litteralDistributionList[1]))
+    return result
 
 
 def calculClassementFrequence(dicoFrequence):
@@ -113,11 +111,11 @@ def calculClassementLitteraux(listeDeClauses):
 
 
 def preTraitementSat(probleme):
-	"""
-	entree: une liste contenant un jeu de variables, et une liste de clause
-	Cette fontion agrege les premieres operations que l esclave va effectuer quand le maitre lui envoie un probleme
-	Ces operations consistent a simplifier le probleme en fonction des valeurs de variables.
-	"""
+    """
+    entree: une liste contenant un jeu de variables, et une liste de clause
+    Cette fontion agrege les premieres operations que l esclave va effectuer quand le maitre lui envoie un probleme
+    Ces operations consistent a simplifier le probleme en fonction des valeurs de variables.
+    """
     #Recuperation de la liste des variables avec valeurs T pour True, F pour False et U pour Undefined
     valeursVariables=probleme[0]
     #Recuperation du Probleme SAT a traiter
@@ -134,10 +132,10 @@ def preTraitementSat(probleme):
 
 
 def genererSousSat(var,pbSat):
-	"""
-	entree: un jeu (valeurs des variables, probleme Sat)
-	Cette fonciton va generer deux sous problemes du probleme sat passe en argument en faisant une disjonction sur une variable
-	"""
+    """
+    entree: un jeu (valeurs des variables, probleme Sat)
+    Cette fonciton va generer deux sous problemes du probleme sat passe en argument en faisant une disjonction sur une variable
+    """
     varAffectationTrue=[]
     varAffectationFalse=[]
     lengthVar=len(var)
@@ -171,8 +169,8 @@ def simplifieSat(varData, pbSat):
     entrée: liste de liste(clauses) décrivant le pb sat, liste d'état des variables: T pour True, F pour False, U pour undecided
     cette fonction va simplifier le pbSat compte tenu des valeurs de variables passees en argument.
     Exemple: si le pbSat en argument contient possede une clause 3 qui contient la variable 1, et que cette variable est fixee a T (True) dans varData, la fonction renvoie un nouveau probleme Sat dont la clause 3 sera [True] 
-	sortie: un nouveau problème sat simplifié avec l'état des variables passées en argument
-	"""
+    sortie: un nouveau problème sat simplifié avec l'état des variables passées en argument
+    """
     if len(pbSat)==0:
         return "Erreur: le probleme ne contient aucune clause !"
     nouveauSat = []
@@ -188,8 +186,8 @@ def simplifieClause(varData,clause):
     entree: une clause, liste d'etat des variables: T pour True, F pour False, U pour undecided
     Cette fonction simplifie la clause passee en argument compte tenu des valeurs de variables passees en argument
     Exemple: si la clause contient la variable 1, et que cette variable est fixee a T (True) dans varData, la fonction renvoie [True] pour indiquer que la clause est True
-	sortie: un nouvelle clause simplifiee avec l'etat des variables passees en argument
-	"""
+    sortie: un nouvelle clause simplifiee avec l'etat des variables passees en argument
+    """
     if len(clause)==0:
         # Si la clause est vide, c'est peutetre qu'on a enleve un F un peu salement non? On pourrait faire un check de clause non vide dans le Load
         return "Erreur: la clause ne contient aucun litteral !"
@@ -238,18 +236,18 @@ def testSatOk(pbSat):
 
 
 def retireSingleton(varData,pbSat):
-	"""
-	entree: une liste de definition des variables et une liste de clause
-	on cherche les clauses qui ne contiennent qu'un seul litteral 'U', si il y en a, on modifie la valeur de la valeur correspondante pour que la clause soit vraie pour pouvoir ensuite l'enlever du probleme.
-	renvoie un nouveau couple (variables, nouveau probleme sat) dont le "nouveau probleme Sat" a ete epure de clause mono-litteral 'U'
-	"""
-	for clause in pbSat:
-		if (len(clause) == 1) and (str(clause) != "[True]") and (str(clause) != "[False]"):
-			k = clause[0]
-			if k>0 and varData[k-1] == 'U':
-				varData[k-1] = 'T'
-			elif k<0 and varData[(-k)-1] == 'U':
-				k = abs(k)
-				varData[k-1] = 'F'
-	nouveauSat = simplifieSat(varData,pbSat)
-	return [varData,nouveauSat]
+    """
+    entree: une liste de definition des variables et une liste de clause
+    on cherche les clauses qui ne contiennent qu'un seul litteral 'U', si il y en a, on modifie la valeur de la valeur correspondante pour que la clause soit vraie pour pouvoir ensuite l'enlever du probleme.
+    renvoie un nouveau couple (variables, nouveau probleme sat) dont le "nouveau probleme Sat" a ete epure de clause mono-litteral 'U'
+    """
+    for clause in pbSat:
+        if (len(clause) == 1) and (str(clause) != "[True]") and (str(clause) != "[False]"):
+            k = clause[0]
+            if k>0 and varData[k-1] == 'U':
+                varData[k-1] = 'T'
+            elif k<0 and varData[(-k)-1] == 'U':
+                k = abs(k)
+                varData[k-1] = 'F'
+    nouveauSat = simplifieSat(varData,pbSat)
+    return [varData,nouveauSat]

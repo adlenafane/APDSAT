@@ -1,8 +1,6 @@
 # coding=utf-8
 from mpi4py import MPI
-from simplifieSat import *
 from utility import *
-from retireSingleton import *
 
 #Tag 1 signifie maitre envoie du travail a l esclave
 #Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu

@@ -61,8 +61,8 @@ def comportementMaitre(comm, filename):
 					print str(message)
 					elapsed = (time.time() - start)
 					print "La solution a ete trouvee en:" + "%.5f" %elapsed
+					resultat = True
 					pbNonFini = False
-
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
 				elif status.Get_tag()==3:
 					print "Cette branche n'a pas de solution d'apres le processus " + str(indexEsclave)
@@ -79,7 +79,8 @@ def comportementMaitre(comm, filename):
 		if fileDesPb.empty() and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)
 			print "Le probleme n'a pas de solution. Temps écoulé:" + "%.5f" %elapsed
+			resultat = False
 			pbNonFini = False
 	for indexEsclave in range(1, size):
 		comm.send("", dest=indexEsclave, tag=5)
-
+	return [size, tailleBatch, nombreDeVariables, nombreDeClauses, resultat, elapsed]

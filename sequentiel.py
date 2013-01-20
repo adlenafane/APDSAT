@@ -18,24 +18,28 @@ pbSat = donneesInitiales[2]
 varData = ['U']*nombreDeVariables
 probleme = [varData, pbSat]
 fileDesPb.put(probleme)
-print "Load ok"
 while pbNonFini:
-    "print begin while"
     probleme = fileDesPb.get()
     valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
     if resultatPreTraitement==True:
         print "Une solution a ete trouvee, il s'agit de:"
         print str(valeursVariables)
         pbNonFini = False
+        result = True
     elif resultatPreTraitement==False:
         pass
         #print "Cette branche n'a pas de solution"
     else:
         fileDesPb.put(genererSousSat(valeursVariables,resultatPreTraitement)[0])
         fileDesPb.put(genererSousSat(valeursVariables,resultatPreTraitement)[1])
-
     if fileDesPb.empty():
         print "Le probleme n'a pas de solution"
         pbNonFini = False
+        result = False
 elapsed = (time.time() - start)
 print "Temps ecoule: " + "%.5f" %elapsed + " secondes"
+
+# Ecris les resultats dans un fichier
+with open('resultatParallele.txt', 'a') as resultFile:
+    resultFile.write(str(filename) + "," + "1"  + "," + "1" + "," + str(nombreDeVariables) + "," + str(nombreDeClauses) + "," + str(result) + "," + str(elapsed))
+    resultFile.write("\n")

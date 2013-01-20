@@ -60,7 +60,7 @@ def comportementMaitre(comm, filename):
 					print "Une solution a ete trouvee, il s'agit de:"
 					print str(message)
 					elapsed = (time.time() - start)
-					print "La solution a ete trouvee en:" + str(elapsed)
+					print "La solution a ete trouvee en:" + "%.5f" %elapsed
 					pbNonFini = False
 
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
@@ -78,8 +78,8 @@ def comportementMaitre(comm, filename):
 					pbNonFini = True
 		if fileDesPb.empty() and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)
-			print "Le probleme n'a pas de solution. Temps écoulé:" + str(elapsed)
+			print "Le probleme n'a pas de solution. Temps écoulé:" + "%.5f" %elapsed
 			pbNonFini = False
 	for indexEsclave in range(1, size):
 		comm.send("", dest=indexEsclave, tag=5)
-	return
+

@@ -3,8 +3,7 @@ from mpi4py import MPI
 from utility import *
 import Queue
 from math import log
-
-
+import time
 
 def comportementMaitre(comm, filename):
 	start = time.time()

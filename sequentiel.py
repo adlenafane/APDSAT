@@ -1,7 +1,9 @@
 # coding=utf-8
 from utility import *
 import Queue
+import time
 
+start = time.time()
 pbNonFini = True
 filename = 'uf20-010.cnf'
 # File d'attente des problèmes à gérer composée de tableaux de taille 2 de la forme [état_des_variables, clauses_à_résoudre]
@@ -34,3 +36,5 @@ while pbNonFini:
     if fileDesPb.empty():
         print "Le probleme n'a pas de solution"
         pbNonFini = False
+elapsed = (time.time() - start)
+print "Temps ecoule: " + str(elapsed) + " secondes"

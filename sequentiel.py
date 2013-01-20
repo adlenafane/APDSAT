@@ -28,7 +28,8 @@ while pbNonFini:
         print str(valeursVariables)
         pbNonFini = False
     elif resultatPreTraitement==False:
-        print "Cette branche n'a pas de solution d'apres le processus "
+        pass
+        #print "Cette branche n'a pas de solution"
     else:
         fileDesPb.put(genererSousSat(valeursVariables,resultatPreTraitement)[0])
         fileDesPb.put(genererSousSat(valeursVariables,resultatPreTraitement)[1])
@@ -37,4 +38,4 @@ while pbNonFini:
         print "Le probleme n'a pas de solution"
         pbNonFini = False
 elapsed = (time.time() - start)
-print "Temps ecoule: " + str(elapsed) + " secondes"
+print "Temps ecoule: " + "%.5f" %elapsed + " secondes"

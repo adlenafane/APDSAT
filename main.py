@@ -20,7 +20,7 @@ def main(args):
 		# Ecris les resultats dans un fichier
 		try:
 			with open('resultatParallele.txt', 'a') as resultFile:
-				resultFile.write(str(filename) + "," + str(result[0])  + "," + str(result[1]) + "," + str(result[2]) + "," + str(result[3]) + "," + str(result[4]) + "," + str(result[5]) + "," + str(socket.gethostname()))
+				resultFile.write(str(filename) + "," + str(result[0])  + "," + str(result[1]) + "," + str(result[2]) + "," + str(result[3]) + "," + str(result[4]) + "," + str(result[5]) + "," + str(socket.gethostname()) + "," + "normal")
 				resultFile.write("\n")
 		except IOError as e:
 			print 'Operation failed: %s' % e.strerror

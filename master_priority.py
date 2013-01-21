@@ -77,7 +77,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 					esclaveDisponible+=1
 					for pb in message:
 						priority = compteVariablesRestantes(probleme[1])
-						fileDesPb.put((priorit, time.time(), pb))
+						fileDesPb.put((priority, time.time(), pb))
 					pbNonFini = True
 		if fileDesPb.empty() and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)

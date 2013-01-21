@@ -864,3 +864,11 @@ data/uf50-01.cnf,4,2,50,218,True,1.46099996567,Adlen-PC
 data/uf50-01.cnf,4,2,50,218,True,1.53100013733,Adlen-PC
 data/uf75-01.cnf,4,2,75,325,True,16.2400000095,Adlen-PC
 data/uf75-01.cnf,4,2,75,325,True,10.9119999409,Adlen-PC
+data/uf50-01.cnf,4,2,50,218,True,1.54500007629,Adlen-PC,priority
+data/uf50-01.cnf,4,2,50,218,True,1.44899988174,Adlen-PC,priority
+data/uf50-01.cnf,4,2,50,218,True,1.49900007248,Adlen-PC,priority
+data/uf50-01.cnf,4,2,50,218,True,1.50500011444,Adlen-PC,priority
+data/uf50-01.cnf,4,2,50,218,True,1.36699986458,Adlen-PC,priority
+data/uf50-01.cnf,4,2,50,218,True,1.48300004005,Adlen-PC,priority
+data/uf75-01.cnf,4,2,75,325,True,21.1159999371,Adlen-PC,priority
+data/uf75-01.cnf,4,2,75,325,True,17.9400000572,Adlen-PC,priority

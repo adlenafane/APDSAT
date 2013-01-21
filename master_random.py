@@ -1,9 +1,9 @@
 # coding=utf-8
 from mpi4py import MPI
 from utility import *
-import Queue
 from math import log
 import time
+import random
 
 def comportementMaitre(comm, filename, tailleBatch):
 	start = time.time()
@@ -17,7 +17,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 	listeEsclave[0] = -1
 	esclaveDisponible = size - 1
 	# File d'attente des problèmes à gérer composée de tableaux de taille 2 de la forme [état_des_variables, clauses_à_résoudre]
-	fileDesPb = Queue.Queue()
+	fileDesPb = []
 
 	# On charge les données provenant du fichier CNF
 	donneesInitiales = loadCnfFile(filename)
@@ -26,30 +26,30 @@ def comportementMaitre(comm, filename, tailleBatch):
 	pbSat = donneesInitiales[2]
 	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
 	varData = ['U']*nombreDeVariables
+	# DEBUG
+	#varData = ['F', 'T', 'T', 'F', 'F', 'T', 'F', 'T', 'F', 'T', 'T', 'T', 'T', 'F', 'T', 'T', 'T', 'F', 'F', 'F']
 	probleme = [varData, pbSat]
-	fileDesPb.put(probleme)
+	fileDesPb.append(probleme)
 
 	while pbNonFini:
-
 		#Envoit de travaux aux esclaves
-		if fileDesPb.empty() == False and esclaveDisponible >=1:
+		if fileDesPb != [] and esclaveDisponible >=1:
 			batchDesProblemes = []
-			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):  #on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.
-				batchDesProblemes.append(fileDesPb.get())
+			while (fileDesPb != [] and len(batchDesProblemes) < tailleBatch):
+				index = random.randint(0, len(fileDesPb)-1)
+				batchDesProblemes.append(fileDesPb[index])
+				del fileDesPb[index]
 			esclaveTrouve = False
 			for indexEsclave in range(1, size):
 				if listeEsclave[indexEsclave]==0 and esclaveTrouve==False:
 					listeEsclave[indexEsclave] = 1
 					esclaveDisponible = esclaveDisponible - 1
 					comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
-					#print "Batch"
-					#print batchDesProblemes
 					esclaveTrouve = True
 		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
 		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
 		for indexEsclave in range(1,size):
 			if listeEsclave[indexEsclave] == 1:
-				#status = MPI.Status()
 				status = MPI.Status()
 				message = comm.recv(source=indexEsclave, tag = MPI.ANY_TAG, status= status)
 				#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
@@ -67,13 +67,12 @@ def comportementMaitre(comm, filename, tailleBatch):
 					pass
 				#Tag 4 signifie l'esclave envoie un pb au maitre
 				elif status.Get_tag()==4:
-					#print "la resolution continue avec " + str(message)
 					listeEsclave[indexEsclave] = 0
 					esclaveDisponible+=1
 					for pb in message:
-						fileDesPb.put(pb)
+						fileDesPb.append(pb)
 					pbNonFini = True
-		if fileDesPb.empty() and esclaveDisponible == size-1:
+		if fileDesPb == [] and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)
 			print "Le probleme n'a pas de solution. Temps écoulé:" + "%.5f" %elapsed
 			resultat = False

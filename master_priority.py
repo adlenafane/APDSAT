@@ -5,6 +5,14 @@ import Queue
 from math import log
 import time
 
+def compteVariablesRestantes(varData):
+	compte = 0
+	for variable in varData:
+		if variable == 'U':
+			compte +=1
+	return compte
+
+
 def comportementMaitre(comm, filename, tailleBatch):
 	start = time.time()
 	rank = comm.rank
@@ -17,7 +25,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 	listeEsclave[0] = -1
 	esclaveDisponible = size - 1
 	# File d'attente des problèmes à gérer composée de tableaux de taille 2 de la forme [état_des_variables, clauses_à_résoudre]
-	fileDesPb = Queue.Queue()
+	fileDesPb = Queue.PriorityQueue()
 
 	# On charge les données provenant du fichier CNF
 	donneesInitiales = loadCnfFile(filename)
@@ -27,26 +35,23 @@ def comportementMaitre(comm, filename, tailleBatch):
 	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
 	varData = ['U']*nombreDeVariables
 	probleme = [varData, pbSat]
-	fileDesPb.put(probleme)
+	priority = compteVariablesRestantes(probleme[1])
+	fileDesPb.put((priority, time.time(), probleme))
 
 	while pbNonFini:
-
 		#Envoit de travaux aux esclaves
 		if fileDesPb.empty() == False and esclaveDisponible >=1:
 			batchDesProblemes = []
 			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):  #on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.
-				batchDesProblemes.append(fileDesPb.get())
+				element = fileDesPb.get()
+				batchDesProblemes.append(element[2])
 			esclaveTrouve = False
 			for indexEsclave in range(1, size):
 				if listeEsclave[indexEsclave]==0 and esclaveTrouve==False:
 					listeEsclave[indexEsclave] = 1
 					esclaveDisponible = esclaveDisponible - 1
 					comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
-					#print "Batch"
-					#print batchDesProblemes
 					esclaveTrouve = True
-		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
-		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
 		for indexEsclave in range(1,size):
 			if listeEsclave[indexEsclave] == 1:
 				#status = MPI.Status()
@@ -71,7 +76,8 @@ def comportementMaitre(comm, filename, tailleBatch):
 					listeEsclave[indexEsclave] = 0
 					esclaveDisponible+=1
 					for pb in message:
-						fileDesPb.put(pb)
+						priority = compteVariablesRestantes(probleme[1])
+						fileDesPb.put((priority, time.time(), pb))
 					pbNonFini = True
 		if fileDesPb.empty() and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)

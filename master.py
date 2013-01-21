@@ -16,6 +16,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 	listeEsclave = [0]*size
 	listeEsclave[0] = -1
 	esclaveDisponible = size - 1
+
 	# File d'attente des problèmes à gérer composée de tableaux de taille 2 de la forme [état_des_variables, clauses_à_résoudre]
 	fileDesPb = Queue.Queue()
 
@@ -24,7 +25,8 @@ def comportementMaitre(comm, filename, tailleBatch):
 	nombreDeVariables = donneesInitiales[0]
 	nombreDeClauses = donneesInitiales[1]	
 	pbSat = donneesInitiales[2]
-	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided'
+
+	# On crée un tableau de taille le nombre de variable qui sont initialisées à 'U' pour 'Undecided' et on initialise notre file
 	varData = ['U']*nombreDeVariables
 	probleme = [varData, pbSat]
 	fileDesPb.put(probleme)
@@ -34,22 +36,20 @@ def comportementMaitre(comm, filename, tailleBatch):
 		#Envoit de travaux aux esclaves
 		if fileDesPb.empty() == False and esclaveDisponible >=1:
 			batchDesProblemes = []
-			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):  #on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.
+			# on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.
+			while (fileDesPb.empty() == False and len(batchDesProblemes) < tailleBatch):  
 				batchDesProblemes.append(fileDesPb.get())
+			# On cherche un esclave disponible et on lui envoie le batch de probleme a traiter
 			esclaveTrouve = False
 			for indexEsclave in range(1, size):
 				if listeEsclave[indexEsclave]==0 and esclaveTrouve==False:
 					listeEsclave[indexEsclave] = 1
 					esclaveDisponible = esclaveDisponible - 1
 					comm.send(batchDesProblemes, dest=indexEsclave, tag=1)
-					#print "Batch"
-					#print batchDesProblemes
 					esclaveTrouve = True
-		# Autre solution: faire ca sequentiellement. Mais du coup il faudrait aussi faire l'envoi de maniere sequentiel (ca n'optimise pas l'utilisation des processeurs, mais bon, l'avantage c'est que ca simplifie pas mal: plus besoin de la variable esclaveDisponible par exemple, et puis comme les taches sont de tailles similaire, et qu'on va les faire tourner sur le meme processeur, les temps de traitement seront très très très proches, donc a mon avis on n'y perd pas bcp...).
-		#pour le Get_tag, j'ai pas pu tester, mais ca doit etre quelque chose commce ca, cf https://groups.google.com/forum/?fromgroups=#!topic/mpi4py/fHzY1gAEYpM
+		# On récupère les réponses des esclaves
 		for indexEsclave in range(1,size):
 			if listeEsclave[indexEsclave] == 1:
-				#status = MPI.Status()
 				status = MPI.Status()
 				message = comm.recv(source=indexEsclave, tag = MPI.ANY_TAG, status= status)
 				#Tag 2 pour un message de l'esclave vers le maitre indiquant que le pbSAT a ete resolu
@@ -63,21 +63,22 @@ def comportementMaitre(comm, filename, tailleBatch):
 					pbNonFini = False
 				#Tag 3 pour un message de l'esclave vers le maitre indiquant que le pbSAT ne peut pas etre resolu (une clause est fausse)
 				elif status.Get_tag()==3:
-					# On ne peut pas arrêter la résolution du pb, celui peut avoir une solution sur une autre branche, c'est juste la branche qu'on kill
 					pass
 				#Tag 4 signifie l'esclave envoie un pb au maitre
 				elif status.Get_tag()==4:
-					#print "la resolution continue avec " + str(message)
 					listeEsclave[indexEsclave] = 0
 					esclaveDisponible+=1
 					for pb in message:
 						fileDesPb.put(pb)
 					pbNonFini = True
+		# Si on n'a plus de probleme et que tout le monde a répondu c'est qu'on a vérifié toutes les possibilités
 		if fileDesPb.empty() and esclaveDisponible == size-1:
 			elapsed = (time.time() - start)
 			print "Le probleme n'a pas de solution. Temps écoulé:" + "%.5f" %elapsed
 			resultat = False
 			pbNonFini = False
 	for indexEsclave in range(1, size):
+		if listeEsclave[indexEsclave] == 1:
+			message = comm.recv(source=indexEsclave, tag = MPI.ANY_TAG, status= status)
 		comm.send("", dest=indexEsclave, tag=5)
 	return [size, tailleBatch, nombreDeVariables, nombreDeClauses, resultat, elapsed]

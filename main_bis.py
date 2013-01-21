@@ -1,6 +1,6 @@
 # coding=utf-8
 from mpi4py import MPI
-from master import *
+from master_bis import *
 from slave import *
 import argparse
 import socket

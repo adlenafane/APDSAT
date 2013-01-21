@@ -1,7 +1,18 @@
 Pre-requis:
 * Python
-* Une bibliothèque MPI (MPICH2, OpenMPI...)
+* Une bibliothèque MPI: MPICH2
 * mpi4py
+
+Installation de la librairie MPI4Py:
+Pré-requis: librairie PIP installée
+* Lancer la ligne de commande: "[sudo] pip install mpi4py"
+Normallement, mpi4py doit être correctement installé suite à cela
+
+* Cependant, il peut parfois être nécessaire de procéder différemment:
+Note de la doc:  If the mpicc compiler wrapper is not on your search path (or if it has a different name) you can use env to pass the environment variable MPICC providing the full path to the MPI compiler wrapper executable:
+"[sudo] env MPICC=/path/to/mpicc pip install mpi4py"
+Soit, dans mon cas: "env MPICC=/Users/nicolas/APD/mpich2-install/bin/mpicc pip install mpi4py"
+
 
 Pour executer l'algorithme:
 * lancer en ligne de commande "mpiexec -n 4 python main.py" lancera le script sur 4 processus, par defaut le script s'execute sur 'uf20-01.cnf'

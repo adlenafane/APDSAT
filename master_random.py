@@ -32,7 +32,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 	fileDesPb.append(probleme)
 
 	while pbNonFini:
-		#Envoit de travaux aux esclaves
+		#Envoi de travaux aux esclaves
 		if fileDesPb != [] and esclaveDisponible >=1:
 			batchDesProblemes = []
 			#on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.

@@ -43,7 +43,7 @@ def comportementMaitre(comm, filename, tailleBatch):
 	fileDesPb.put((priority, time.time(), probleme))
 
 	while pbNonFini:
-		#Envoit de travaux aux esclaves
+		#Envoi de travaux aux esclaves
 		if fileDesPb.empty() == False and esclaveDisponible >=1:
 			batchDesProblemes = []
 			#on sort de ce while des que l'on arrive au bout de la fileDesPb OU que notre batchDesProbleme atteint la tailleDeBatch definie.

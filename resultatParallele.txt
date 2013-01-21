@@ -1456,3 +1456,15 @@ data/uuf75-018.cnf,4,16,75,325,False,10.376999855,Adlen-PC,normal
 data/uuf75-018.cnf,4,16,75,325,False,10.4479999542,Adlen-PC,normal
 data/uuf75-018.cnf,4,16,75,325,False,8.61899995804,Adlen-PC,normal
 data/uuf75-018.cnf,4,16,75,325,False,8.53200006485,Adlen-PC,normal
+data/uuf50-01.cnf,4,16,50,218,False,1.53100013733,Adlen-PC,normal
+data/uuf50-01.cnf,4,8,50,218,False,1.64100003242,Adlen-PC,normal
+data/uf50-01.cnf,4,8,50,218,True,1.28299999237,Adlen-PC,normal
+data/uf50-01.cnf,4,16,50,218,True,1.21900010109,Adlen-PC,normal
+data/uf50-01.cnf,4,16,50,218,True,1.10700011253,Adlen-PC,random
+data/uf50-01.cnf,4,16,50,218,True,1.11899995804,Adlen-PC,priority
+data/uf50-01.cnf,4,16,50,218,True,1.28700017929,Adlen-PC,normal
+data/uf50-01.cnf,4,16,50,218,True,0.99799990654,Adlen-PC,random
+data/uf50-01.cnf,4,16,50,218,True,1.11500000954,Adlen-PC,priority
+data/uf100-01-030.cnf,4,8,100,30,True,996.46600008,Adlen-PC,normal
+data/uf50-01.cnf,1,1,50,218,True,1.1369998455,Adlen-PC
+data/uf50-01.cnf,1,1,50,218,True,1.11999988556,Adlen-PC

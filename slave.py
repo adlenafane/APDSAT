@@ -10,16 +10,14 @@ from utility import *
 
 def comportementEsclave(comm):
     print "Hello! I'm rank %d from %d running in total..." % (comm.rank, comm.size)    
+    # On attend un message du maitre
     status = MPI.Status()
     data=comm.recv(source=0,tag = MPI.ANY_TAG, status= status)
 
     while status.Get_tag() != 5:
         resultat=[]
         for probleme in data:
-            #print "Try to solve"
             valeursVariables,resultatPreTraitement=preTraitementSat(probleme)
-            #print valeursVariables
-            #print resultatPreTraitement
             if resultatPreTraitement==True:
                 #On envoie un message de type tag 2 au maître pour lui indiquer que le pb SAT a ete resolu
                 #On envoie au maitre la valeur des variables resolvant le probleme SAT
@@ -34,5 +32,6 @@ def comportementEsclave(comm):
 
         comm.send(resultat,dest=0,tag=4)
         data=comm.recv(source=0,tag = MPI.ANY_TAG, status= status)
+    # On a reçu un message avec un tag de fin (5) pour arriver ici
     print "End message Received"
     return

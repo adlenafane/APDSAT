@@ -8,5 +8,5 @@ Pour executer l'algorithme:
 * le fichier main.py permet de rajouter des arguments complementaires:
 		* --file "monFichier.cnf" permet d'executer le script en chargeant la forme normale conjonctive definie dans "monFichier.cnf". Le Dossier "Data" contient des exemples de fichiers CNF trouvés sur internet, et permettant de vérifier notre algorithme.
 		* --batch permet de modifier la taille des messages envoyés par le maitre aux esclaves. Par exemple avec "--batch 8", le message du maitre aux esclaves contiendra 8 problemes.
-
+* Pour lancer la résolution avec une file FIFO, il faut utiliser le fichier main.py, pour la gestion avec priorité main_priority.py, pour l'aléatoire main_random.py
 
